@@ -1,0 +1,19 @@
+{
+  "name": "PixiCulling",
+  "version": "0.1",
+  "description": "A cell based culling engine for Pixi",
+  "main": "./build/index.html",
+  "repository": "git@github.com:ErikSom/PixiCulling.git",
+  "author": "Erik Sombroek",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-1": "^6.24.1",
+    "pixi.js": "^4.8.2",
+    "stats.js": "^0.17.0",
+    "webpack": "^4.26.0"
+  }
+}
