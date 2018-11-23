@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import * as PIXICulling from './PIXICulling';
+import * as PixiCulling from './PixiCulling';
 const Stats = require('stats.js');
 
 
@@ -8,11 +8,14 @@ const totalBunnies = 50000;
 const totalMovingBunnies = 100;
 const targetFPS = 1000 / 60; //60fps
 const bunnySpeed = 50;
-PIXICulling.renderArea.width = 100;
-PIXICulling.renderArea.height = 100;
-PIXICulling.renderArea.height = 100;
-PIXICulling.cellSize.x = 50;
-PIXICulling.cellSize.y = 50;
+
+//PIXI
+PixiCulling.renderArea.width = 100;
+PixiCulling.renderArea.height = 100;
+PixiCulling.renderArea.height = 100;
+PixiCulling.cellSize.x = 50;
+PixiCulling.cellSize.y = 50;
+PixiCulling.setDebug(true);
 
 const app = new PIXI.Application();
 app.stop(); // do custom render step
@@ -55,7 +58,7 @@ const init = () => {
         movingBunnies.push(targetBunny);
     }
     document.addEventListener('mousemove', updateRenderView);
-    PIXICulling.init(container);
+    PixiCulling.init(container);
     render();
 }
 const moveBunnies = () => {
@@ -87,14 +90,14 @@ const moveBunnies = () => {
     });
 }
 const updateRenderView = (event)=> {
-    PIXICulling.renderArea.x = event.clientX-PIXICulling.renderArea.width/2;
-    PIXICulling.renderArea.y = event.clientY-PIXICulling.renderArea.height/2;
+    PixiCulling.renderArea.x = event.clientX-PixiCulling.renderArea.width/2;
+    PixiCulling.renderArea.y = event.clientY-PixiCulling.renderArea.height/2;
 }
 
 const update = () => {
     stats.begin();
     moveBunnies();
-    PIXICulling.update();
+    PixiCulling.update();
     app.render();
     stats.end();
 }
