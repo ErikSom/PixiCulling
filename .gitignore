@@ -5,3 +5,4 @@
 .vscode
 .eslintcache
 package-lock.json
+build/PixiCullingDemo.js
