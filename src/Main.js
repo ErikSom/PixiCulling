@@ -1,11 +1,18 @@
 import * as PIXI from 'pixi.js';
+import * as PIXICulling from './PIXICulling';
 const Stats = require('stats.js');
+
 
 //Settings
 const totalBunnies = 50000;
-const movingBunniesPercentage = 10;
+const totalMovingBunnies = 100;
 const targetFPS = 1000 / 60; //60fps
 const bunnySpeed = 50;
+PIXICulling.renderArea.width = 100;
+PIXICulling.renderArea.height = 100;
+PIXICulling.renderArea.height = 100;
+PIXICulling.cellSize.x = 50;
+PIXICulling.cellSize.y = 50;
 
 const app = new PIXI.Application();
 app.stop(); // do custom render step
@@ -14,13 +21,16 @@ document.body.appendChild(app.view);
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
+const container = new PIXI.Graphics();
+app.stage.addChild(container);
+
+let movingBunnies = [];
 
 PIXI.loader.add('bunny', './assets/bunny.png').load((loader, resources) => {
     init();
 });
 
 
-let movingBunnies = [];
 const init = () => {
     const num = Math.sqrt(totalBunnies)
 
@@ -32,20 +42,21 @@ const init = () => {
             bunny.x = app.renderer.width * iPerc
             bunny.y = app.renderer.height * jPerc
             bunny.pivot.set(bunny.width / 2, bunny.height / 2);
-            app.stage.addChild(bunny);
+            container.addChild(bunny);
         }
     }
-    render();
-
-    for (let i = 0; i < totalBunnies * (movingBunniesPercentage / 100); i++) {
-        const randomBunnyIndex = Math.floor(app.stage.children.length * Math.random())
-        const targetBunny = app.stage.getChildAt(randomBunnyIndex);
+    for (let i = 0; i < totalMovingBunnies; i++) {
+        const randomBunnyIndex = Math.floor(container.children.length * Math.random())
+        const targetBunny = container.getChildAt(randomBunnyIndex);
         if (movingBunnies.includes(targetBunny)) {
             i--;
             continue;
         }
         movingBunnies.push(targetBunny);
     }
+    document.addEventListener('mousemove', updateRenderView);
+    PIXICulling.init(container);
+    render();
 }
 const moveBunnies = () => {
     movingBunnies.map((bunny) => {
@@ -75,10 +86,15 @@ const moveBunnies = () => {
         }
     });
 }
+const updateRenderView = (event)=> {
+    PIXICulling.renderArea.x = event.clientX-PIXICulling.renderArea.width/2;
+    PIXICulling.renderArea.y = event.clientY-PIXICulling.renderArea.height/2;
+}
 
 const update = () => {
     stats.begin();
     moveBunnies();
+    PIXICulling.update();
     app.render();
     stats.end();
 }
