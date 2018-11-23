@@ -1,0 +1,11 @@
+{
+	"presets": [
+		["env", {"targets": {"ie": 9}}],
+		"stage-1"
+	],
+	"env": {
+		"test": {
+			"sourceMaps": "inline"
+		}
+	}
+}
