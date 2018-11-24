@@ -4,7 +4,7 @@ const Stats = require('stats.js');
 
 
 //Settings
-const totalBunnies = 100000;
+const totalBunnies = 1000;
 const totalMovingBunnies = 100;
 const targetFPS = 1000 / 60; //60fps
 const bunnySpeed = 10;
@@ -47,6 +47,7 @@ const init = () => {
             bunny.x = app.renderer.width * iPerc;
             bunny.y = app.renderer.height * jPerc;
             bunny.pivot.set(bunny.width / 2, bunny.height / 2);
+            bunny.filters = [new PIXI.filters.BlurFilter()];
             container.addChild(bunny);
         }
     }
