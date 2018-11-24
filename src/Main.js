@@ -46,8 +46,8 @@ const init = () => {
         for (let j = 0; j < num; j++) {
             const jPerc = (j + 1) / num;
             const bunny = new PIXI.Sprite(PIXI.loader.resources.bunny.texture);
-            bunny.x = app.renderer.width * iPerc
-            bunny.y = app.renderer.height * jPerc
+            bunny.x = app.renderer.width * iPerc;
+            bunny.y = app.renderer.height * jPerc;
             bunny.pivot.set(bunny.width / 2, bunny.height / 2);
             container.addChild(bunny);
         }
@@ -69,6 +69,11 @@ const init = () => {
     PixiCulling.init(container);
 
     render();
+
+
+    var text = new PIXI.Text('Press Space to enable/disable culling, press D to enable/disable debug drawing', {fontSize: 12, fill : 0xffffff});
+    text.y = 100;
+    app.stage.addChild(text);
 }
 const moveBunnies = () => {
     movingBunnies.map((bunny) => {
