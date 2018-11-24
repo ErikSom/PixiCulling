@@ -137,7 +137,7 @@ const initGraphicForCulling = function (graphic) {
     graphic._cullingVisibleCells = 0;
     graphic._cullings = 0;
 }
-const getSizeInfoForGraphic = function (graphic) {
+export const getSizeInfoForGraphic = function (graphic) {
     const bounds = graphic.getBounds();
     graphic._cullingWidthExtent = bounds.width / 2;
     graphic._cullingHeightExtent = bounds.height / 2;

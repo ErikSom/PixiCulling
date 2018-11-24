@@ -12,7 +12,6 @@ const bunnySpeed = 10;
 //PIXI
 PixiCulling.renderArea.width = 100;
 PixiCulling.renderArea.height = 100;
-PixiCulling.renderArea.height = 100;
 PixiCulling.cellSize.x = 50;
 PixiCulling.cellSize.y = 50;
 
