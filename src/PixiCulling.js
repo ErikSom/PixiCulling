@@ -35,7 +35,7 @@ export const setEnabled = (bool) => {
     container.children.map((child)=>{
         child.renderable = !bool;
         if(!bool) child._cullingCells = undefined;
-        debugGraphics.clear();
+        if(debugGraphics) debugGraphics.clear();
     })
 
     enabled = bool;

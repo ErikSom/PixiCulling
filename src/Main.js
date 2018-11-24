@@ -15,7 +15,6 @@ PixiCulling.renderArea.height = 100;
 PixiCulling.renderArea.height = 100;
 PixiCulling.cellSize.x = 50;
 PixiCulling.cellSize.y = 50;
-PixiCulling.setDebug(true);
 
 const app = new PIXI.Application({
     autoResize: true
@@ -71,7 +70,8 @@ const init = () => {
     render();
 
 
-    var text = new PIXI.Text('Press Space to enable/disable culling, press D to enable/disable debug drawing', {fontSize: 12, fill : 0xffffff});
+    var text = new PIXI.Text(`${totalBunnies} Bunnies, of which ${totalMovingBunnies} moving\nMove mouse to reposition the render view\nPress Space to enable/disable culling, press D to enable/disable debug drawing`, {fontSize: 12, fill : 0xffffff});
+    text.x = 100;
     text.y = 100;
     app.stage.addChild(text);
 }
