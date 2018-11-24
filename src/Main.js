@@ -47,7 +47,7 @@ const init = () => {
             bunny.x = app.renderer.width * iPerc;
             bunny.y = app.renderer.height * jPerc;
             bunny.pivot.set(bunny.width / 2, bunny.height / 2);
-            bunny.filters = [new PIXI.filters.BlurFilter()];
+            bunny.filters = [new PIXI.filters.BlurFilter()]; // added blurring to break batching
             container.addChild(bunny);
         }
     }
