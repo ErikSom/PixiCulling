@@ -17,7 +17,7 @@ PixiCulling.cellSize.x = 50;
 PixiCulling.cellSize.y = 50;
 PixiCulling.setDebug(true);
 
-const app = new PIXI.Application();
+const app = new PIXI.Application({autoResize:true});
 app.stop(); // do custom render step
 document.body.appendChild(app.view);
 
@@ -37,6 +37,7 @@ PIXI.loader.add('bunny', './assets/bunny.png').load((loader, resources) => {
 const init = () => {
     const num = Math.sqrt(totalBunnies)
 
+    // position the bunnies evenly over the full screen
     for (let i = 0; i < num; i++) {
         const iPerc = (i + 1) / num;
         for (let j = 0; j < num; j++) {
@@ -48,6 +49,7 @@ const init = () => {
             container.addChild(bunny);
         }
     }
+    // select bunnies that will move
     for (let i = 0; i < totalMovingBunnies; i++) {
         const randomBunnyIndex = Math.floor(container.children.length * Math.random())
         const targetBunny = container.getChildAt(randomBunnyIndex);
@@ -57,7 +59,11 @@ const init = () => {
         }
         movingBunnies.push(targetBunny);
     }
-    document.addEventListener('mousemove', updateRenderView);
+    // set up listeners
+    document.addEventListener('mousemove', handleMouseMove);
+    //document.addEventListener('keydown', )
+
+
     PixiCulling.init(container);
     render();
 }
@@ -89,7 +95,8 @@ const moveBunnies = () => {
         }
     });
 }
-const updateRenderView = (event)=> {
+const handleMouseMove = (event)=> {
+    //move the viewable area
     PixiCulling.renderArea.x = event.clientX-PixiCulling.renderArea.width/2;
     PixiCulling.renderArea.y = event.clientY-PixiCulling.renderArea.height/2;
 }
@@ -113,3 +120,11 @@ const render = (newtime) => {
         update();
     }
 }
+
+
+//handle resize
+window.addEventListener('resize', resize);
+const resize = () =>{
+	app.renderer.resize(window.innerWidth, window.innerHeight);
+}
+resize();
