@@ -2,7 +2,7 @@
 A cell based culling engine for Pixi
 
 # Example
-[https://eriksom.github.io/PixiCulling/]
+https://eriksom.github.io/PixiCulling/
 
 # Notes
 * Graphics need to have center at 0,0
