@@ -4,10 +4,10 @@ const Stats = require('stats.js');
 
 
 //Settings
-const totalBunnies = 50000;
+const totalBunnies = 100000;
 const totalMovingBunnies = 100;
 const targetFPS = 1000 / 60; //60fps
-const bunnySpeed = 50;
+const bunnySpeed = 10;
 
 //PIXI
 PixiCulling.renderArea.width = 100;
@@ -17,7 +17,9 @@ PixiCulling.cellSize.x = 50;
 PixiCulling.cellSize.y = 50;
 PixiCulling.setDebug(true);
 
-const app = new PIXI.Application({autoResize:true});
+const app = new PIXI.Application({
+    autoResize: true
+});
 app.stop(); // do custom render step
 document.body.appendChild(app.view);
 
@@ -28,6 +30,7 @@ const container = new PIXI.Graphics();
 app.stage.addChild(container);
 
 let movingBunnies = [];
+
 
 PIXI.loader.add('bunny', './assets/bunny.png').load((loader, resources) => {
     init();
@@ -61,10 +64,10 @@ const init = () => {
     }
     // set up listeners
     document.addEventListener('mousemove', handleMouseMove);
-    //document.addEventListener('keydown', )
-
+    document.addEventListener('keyup', handleKeyUp);
 
     PixiCulling.init(container);
+
     render();
 }
 const moveBunnies = () => {
@@ -95,10 +98,17 @@ const moveBunnies = () => {
         }
     });
 }
-const handleMouseMove = (event)=> {
+const handleMouseMove = (event) => {
     //move the viewable area
-    PixiCulling.renderArea.x = event.clientX-PixiCulling.renderArea.width/2;
-    PixiCulling.renderArea.y = event.clientY-PixiCulling.renderArea.height/2;
+    PixiCulling.renderArea.x = event.clientX - PixiCulling.renderArea.width / 2;
+    PixiCulling.renderArea.y = event.clientY - PixiCulling.renderArea.height / 2;
+}
+const handleKeyUp = (event) => {
+    if(event.keyCode == 32){
+        PixiCulling.toggleEnabled();
+    }else if(event.keyCode == 68){
+        PixiCulling.toggleDebug();
+    }
 }
 
 const update = () => {
@@ -124,7 +134,7 @@ const render = (newtime) => {
 
 //handle resize
 window.addEventListener('resize', resize);
-const resize = () =>{
-	app.renderer.resize(window.innerWidth, window.innerHeight);
+const resize = () => {
+    app.renderer.resize(window.innerWidth, window.innerHeight);
 }
 resize();

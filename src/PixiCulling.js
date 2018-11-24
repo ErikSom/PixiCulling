@@ -17,10 +17,28 @@ let debugGraphics;
 let visibleCells = {};
 const settingsIndexCount = 2;
 let debug = false;
+let enabled = true;
 
 
+export const toggleDebug = ()=>{
+    setDebug(!debug);
+}
 export const setDebug = (bool) => {
     debug = bool;
+    if(debugGraphics)debugGraphics.clear();
+}
+export const toggleEnabled = ()=>{
+    setEnabled(!enabled);
+}
+export const setEnabled = (bool) => {
+    if(enabled == bool) return;
+    container.children.map((child)=>{
+        child.renderable = !bool;
+        if(!bool) child._cullingCells = undefined;
+        debugGraphics.clear();
+    })
+
+    enabled = bool;
 }
 
 export const init = function (_container) {
@@ -28,6 +46,9 @@ export const init = function (_container) {
     container = _container;
 
     cellDictionary = {};
+    updateTicks = 0;
+    visibleCells = {};
+
     for (var i = 0; i < container.children.length; i++) {
         //graphic.renderable = false;
         placeGraphicInCells(container.children[i]);
@@ -65,6 +86,7 @@ export const init = function (_container) {
 }
 
 const placeGraphicInCells = function (graphic) {
+    if(!enabled) return;
     if (graphic == debugGraphics) return;
     if (!graphic.visible) return;
     if (graphic._cullingCells != undefined) {
@@ -201,7 +223,7 @@ const drawAllCells = function () {
     });
 }
 export const update = function () {
-    console.log(debug);
+    if(!enabled) return;
     if (debug) {
         if (!debugGraphics) {
             debugGraphics = container;
