@@ -18,6 +18,8 @@ PixiCulling.renderArea.y = 100;
 PixiCulling.renderArea.width = 200;
 PixiCulling.renderArea.height = 300;
 
+PixiCulling.margin = 50; // allow extra margin arround the renderArea, usefull when setting renderArea to full screen and you dont want big objects to pop in the screen, default=0
+
 //here you can set the precision of the culling, lower number is more precision, don't change these during runtime
 PixiCulling.cellSize.x = 50;
 PixiCulling.cellSize.y = 50;
