@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js';
 
 let cellDictionary = {};
 export var renderArea = {
-    x: 100,
-    y: 300,
+    x: 0,
+    y: 0,
     width: 400,
     height: 400
 };
@@ -11,12 +11,13 @@ export var cellSize = {
     x: 200,
     y: 200
 };
+export const margin = 300;
 let container;
 let updateTicks = 0;
 let debugGraphics;
 let visibleCells = {};
 const settingsIndexCount = 2;
-let debug = false;
+let debug = true;
 let enabled = true;
 
 
@@ -117,6 +118,7 @@ const placeGraphicInCells = function (graphic) {
     setGraphicsVisible([0, 0, graphic]);
 }
 const removeGraphicFromCells = function (graphic) {
+    if(!graphic._cullingCells) return;
     graphic._cullingCells.map((cell) => {
         cellDictionary[cell] = cellDictionary[cell].filter(item => item !== graphic);
         if (cellDictionary[cell].length == settingsIndexCount && !cellDictionary[cell][0]) delete cellDictionary[cell];
@@ -148,8 +150,8 @@ export const getSizeInfoForGraphic = function (graphic) {
 
 const updateVisibleCells = function () {
     updateTicks++;
-    const global_sp = new PIXI.Point(renderArea.x, renderArea.y);
-    const global_ep = new PIXI.Point(renderArea.x + renderArea.width, renderArea.y + renderArea.height);
+    const global_sp = new PIXI.Point(renderArea.x-margin, renderArea.y-margin);
+    const global_ep = new PIXI.Point(renderArea.x + renderArea.width+margin, renderArea.y + renderArea.height+margin);
     const sp = container.toLocal(global_sp);
     const ep = container.toLocal(global_ep);
     const w = ep.x - sp.x;
