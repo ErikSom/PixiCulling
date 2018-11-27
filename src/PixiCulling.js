@@ -11,7 +11,7 @@ export var cellSize = {
     x: 200,
     y: 200
 };
-export const margin = 300;
+export const margin = 0;
 let container;
 let updateTicks = 0;
 let debugGraphics;
@@ -51,7 +51,6 @@ export const init = function (_container) {
     visibleCells = {};
 
     for (var i = 0; i < container.children.length; i++) {
-        //graphic.renderable = false;
         placeGraphicInCells(container.children[i]);
     }
 
@@ -87,6 +86,7 @@ export const init = function (_container) {
 }
 
 const placeGraphicInCells = function (graphic) {
+
     if(!enabled) return;
     if (graphic == debugGraphics) return;
     if (!graphic.visible) return;
@@ -96,7 +96,11 @@ const placeGraphicInCells = function (graphic) {
         initGraphicForCulling(graphic);
     }
 
-    if (graphic._cullingSizeDirty) getSizeInfoForGraphic(graphic);
+    if (graphic._cullingSizeDirty){
+         getSizeInfoForGraphic(graphic);
+         //"getSizeInfoForGraphic" calls "updateTransform" which calls recursive "place"  so its ok , but this is a bit hacky
+         return;
+    }
 
     const startX = Math.floor((graphic.x - graphic._cullingWidthExtent) / cellSize.x);
     const startY = Math.floor((graphic.y - graphic._cullingHeightExtent) / cellSize.y);
@@ -107,12 +111,14 @@ const placeGraphicInCells = function (graphic) {
             const cellX = startX + i;
             const cellY = startY + j;
             const cell = `${cellX}_${cellY}`;
+
             if (cellDictionary[cell] == undefined) cellDictionary[cell] = [false, 0];
             cellDictionary[cell].push(graphic);
 
             if (cellDictionary[cell][0]) graphic._cullingVisibleCells++;
 
             graphic._cullingCells.push(cell);
+
         }
     }
     setGraphicsVisible([0, 0, graphic]);
@@ -127,25 +133,37 @@ const removeGraphicFromCells = function (graphic) {
     graphic._cullingCells = [];
 }
 const initGraphicForCulling = function (graphic) {
+    graphic._cullingTransformID = graphic.transform._currentLocalID;
     const _pixiContainerUpdateSuper = graphic.updateTransform;
     graphic.updateTransform = function updateTransform() {
-        if (this.transform._localID != this.transform._currentLocalID) {
+        if (this._cullingTransformID != this.transform._currentLocalID) {
+            this._cullingTransformID = this.transform._currentLocalID;
             placeGraphicInCells(graphic);
         }
         _pixiContainerUpdateSuper.apply(this);
     };
+
     graphic._cullingSizeDirty = true;
     graphic._cullingCells = [];
     graphic._cullingVisibleCells = 0;
     graphic._cullings = 0;
 }
 export const getSizeInfoForGraphic = function (graphic) {
-    const bounds = graphic.getBounds();
+    const bounds = graphic.getLocalBounds();
     graphic._cullingWidthExtent = bounds.width / 2;
     graphic._cullingHeightExtent = bounds.height / 2;
     graphic._cullingXTiles = Math.ceil(bounds.width / cellSize.x);
     graphic._cullingYTiles = Math.ceil(bounds.height / cellSize.y);
     graphic._cullingSizeDirty = false;
+
+    //fix to allow rotation
+    if(graphic._cullingWidthExtent > graphic._cullingHeightExtent){
+        graphic._cullingHeightExtent = graphic._cullingWidthExtent;
+        graphic._cullingYTiles = graphic._cullingXTiles;
+    }else{
+        graphic._cullingWidthExtent = graphic._cullingHeightExtent;
+        graphic._cullingXTiles = graphic._cullingYTiles;
+    }
 }
 
 const updateVisibleCells = function () {
