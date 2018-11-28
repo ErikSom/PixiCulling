@@ -11,13 +11,13 @@ export var cellSize = {
     x: 200,
     y: 200
 };
-export const margin = 0;
+export const marginCells = 1;
 let container;
 let updateTicks = 0;
 let debugGraphics;
 let visibleCells = {};
 const settingsIndexCount = 2;
-let debug = true;
+let debug = false;
 let enabled = true;
 
 
@@ -168,8 +168,8 @@ export const getSizeInfoForGraphic = function (graphic) {
 
 const updateVisibleCells = function () {
     updateTicks++;
-    const global_sp = new PIXI.Point(renderArea.x-margin, renderArea.y-margin);
-    const global_ep = new PIXI.Point(renderArea.x + renderArea.width+margin, renderArea.y + renderArea.height+margin);
+    const global_sp = new PIXI.Point(renderArea.x, renderArea.y);
+    const global_ep = new PIXI.Point(renderArea.x + renderArea.width, renderArea.y + renderArea.height);
     const sp = container.toLocal(global_sp);
     const ep = container.toLocal(global_ep);
     const w = ep.x - sp.x;
@@ -185,8 +185,8 @@ const updateVisibleCells = function () {
     const visibileXTiles = Math.ceil(w / cellSize.x) + 1;
     const visibileYTiles = Math.ceil(h / cellSize.y) + 1;
 
-    for (let i = 0; i < visibileXTiles; i++) {
-        for (let j = 0; j < visibileYTiles; j++) {
+    for (let i = -marginCells; i < visibileXTiles+marginCells; i++) {
+        for (let j = -marginCells; j < visibileYTiles+marginCells; j++) {
             let tileX = startTileX + i;
             let tileY = startTileY + j;
             let cell = `${tileX}_${tileY}`;
