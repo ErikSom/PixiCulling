@@ -1,4 +1,4 @@
-# PixiCulling [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Checkout%20this%20culling%20engine%20for%20pixi&url=https://github.com/ErikSom/PixiCulling&via=github&hashtags=pixi)
+# PixiCulling [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Checkout%20this%20culling%20engine%20for%20pixi&url=https://github.com/ErikSom/PixiCulling&hashtags=pixi)
 A cell based culling engine for Pixi
 
 # Example
